@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nginx-application
+  namespace: argocd   # Namespace where Argo CD is installed
+spec:
+  destination:
+    server: 'https://kubernetes.default.svc'  # Kubernetes API server URL
+    namespace: default   # Namespace in which NGINX will be deployed
+  project: default   # Argo CD project to which the application belongs
+  source:
+    repoURL: 'https://github.com/sjcsuv/samplegitops'  # Source repository URL
+    path: manifest    # Path within the repository where the NGINX manifests are located
+    targetRevision: main   # Git branch, tag, or commit to deploy
+  syncPolicy:
+    automated:
+      prune: true   # Prune resources not found in Git
+      #selfHeal: true   # Automatically sync the application when it drifts from the desired state
+
